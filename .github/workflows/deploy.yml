@@ -1,0 +1,110 @@
+name: Deploy to Digital Ocean and Cloud Alpha Edge
+on:
+  push:
+    branches:
+      - development
+      - production
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  REGISTRY_NAME: aicoe-tm
+  REGISTRY: registry.digitalocean.com/$REGISTRY_NAME
+  ENVIRONMENT: ${{ github.ref == 'refs/heads/production' && 'production' || 'development' }}
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create env file
+        run: |
+          touch .env
+          if [[ "${{ env.ENVIRONMENT }}" == "development" ]]; then
+            echo "NEXT_PUBLIC_DOMAIN=https://aicoe.dev/demo-community" >> .env
+          else
+            echo "NEXT_PUBLIC_DOMAIN=https://ai.tm.com.my/demo-community" >> .env
+          fi
+
+      - name: Display env file (safely)
+        run: |
+          echo "Displaying .env content with masked sensitive values:"
+          echo "----------------------------------------"
+          sed 's/=.*/=****/' .env
+          echo "----------------------------------------"
+          echo "File size (bytes):"
+          wc -c .env
+          echo "Number of environment variables:"
+          wc -l .env
+
+      - name: Create image from repository
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v1 .
+
+      - name: Log in to DigitalOcean Container Registry
+        run: |
+          echo '${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}' | docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} --password-stdin ${{ env.REGISTRY }}
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v1
+
+  pull_and_deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Up SSH Key for VM
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Add VM to Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} >> ~/.ssh/known_hosts
+
+      - name: Clean Up Docker System
+        run: |
+          ssh ${{ secrets.VM_USERNAME }}@${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} "
+            docker system prune -a -f
+          "
+
+      - name: Login to Container Registry on VM
+        run: |
+          ssh ${{ secrets.VM_USERNAME }}@${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} "
+            echo '${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}' | docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} --password-stdin ${{ env.REGISTRY }}
+          "
+
+      - name: Pull Latest Image on VM
+        run: |
+          ssh ${{ secrets.VM_USERNAME }}@${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} "
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v1
+          "
+
+      - name: Stop Existing Container
+        run: |
+          ssh ${{ secrets.VM_USERNAME }}@${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} "
+            docker stop ${{ env.IMAGE_NAME }} || true
+          "
+
+      - name: Remove Existing Container
+        run: |
+          ssh ${{ secrets.VM_USERNAME }}@${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} "
+            docker rm ${{ env.IMAGE_NAME }} || true
+          "
+
+      - name: Start New Container
+        run: |
+          ssh ${{ secrets.VM_USERNAME }}@${{ env.ENVIRONMENT == 'development' && secrets.DEV_VM_IP || secrets.PROD_VM_IP }} "
+            docker run -d \
+              --name ${{ env.IMAGE_NAME }} \
+              --restart always \
+              -p 3010:3000 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:v1
+          "
+
+      - name: Trigger DO Registry Garbage Collection
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" \
+            "https://api.digitalocean.com/v2/registry/${{ env.REGISTRY_NAME }}/garbage-collection"
