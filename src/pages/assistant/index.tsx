@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { fadeInUp, staggerContainer, floatAnimation } from '@/utils/animations';
 import iOS18Decoration from '@/components/iOS18Decoration';
+import useDynamicHeight from '@/hooks/useDynamicHeight';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const dynamicHeight = useDynamicHeight();
 
   useEffect(() => {
     // Simulate loading state
@@ -22,10 +24,11 @@ const Page = () => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="ios18-container min-h-screen w-full"
+      className="ios18-container"
+      style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
     >
-      {React.createElement(iOS18Decoration, { className: "opacity-100" })}
-      <div className="container mx-auto h-full px-4 py-6 relative z-10 pointer-events-auto">
+      <iOS18Decoration className="opacity-100" />
+      <div className="container mx-auto h-full px-4 py-6 relative z-10 pointer-events-auto ios18-content">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -54,7 +57,7 @@ const Page = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex justify-center items-center h-[40vh]"
+              className="flex justify-center items-center flex-grow"
             >
               <div className="flex flex-col items-center">
                 <motion.div 
@@ -75,7 +78,7 @@ const Page = () => {
               variants={fadeInUp}
               initial="hidden"
               animate="visible"
-              className="container mx-auto flex h-full w-full flex-col p-1 md:w-2/3 md:p-4"
+              className="container mx-auto flex flex-grow w-full flex-col p-1 md:w-2/3 md:p-4"
             >
               <Chat token={localStorage.getItem('accessToken') || ''} />
             </motion.div>

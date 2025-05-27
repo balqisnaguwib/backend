@@ -20,9 +20,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AuthGuard from '../providers/AuthGuard';
 import { logout } from '../stores/auth';
 import { useMediaQuery } from '@/contexts/MediaQuery';
+import useDynamicHeight from '@/hooks/useDynamicHeight';
 
 // Interfaces
-
 interface LayoutProps {
   children: ReactNode;
 }
@@ -32,6 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { push, asPath } = useRouter();
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery('(max-width: 768px)');
+  const dynamicHeight = useDynamicHeight();
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('');
@@ -43,7 +44,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [asPath]);
 
   // Others
-
   const TABS = [
     {
       path: '/assistant',
@@ -320,7 +320,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <AuthGuard>
-      <div className="relative flex h-screen w-full text-white">
+      <div 
+        className="relative flex h-screen w-full text-white"
+        style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
+      >
         <motion.div
           className={twMerge(
             'bg-primary hidden h-full flex-col justify-between shadow-xl transition-all duration-500 ease-in-out md:flex relative overflow-hidden',
@@ -339,7 +342,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             backgroundImage: 'linear-gradient(to bottom, rgba(182, 1, 11, 0.9), rgba(182, 1, 11, 1))',
             backdropFilter: 'blur(10px)',
             boxShadow: '0 4px 30px rgba(0, 0, 0, 0.15)',
-            border: '1px solid rgba(255, 255, 255, 0.05)'
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            height: dynamicHeight ? `${dynamicHeight}px` : '100vh'
           }}
           whileHover={{
             boxShadow: '0 6px 40px rgba(0, 0, 0, 0.25)'
@@ -412,7 +416,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 backgroundImage: 'linear-gradient(to bottom, rgba(182, 1, 11, 0.9), rgba(182, 1, 11, 1))',
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 4px 30px rgba(0, 0, 0, 0.15)',
-                border: '1px solid rgba(255, 255, 255, 0.05)'
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                height: dynamicHeight ? `${dynamicHeight}px` : '100vh'
               }}
             >
               {/* iOS 18 decorations for mobile sidebar */}
@@ -469,7 +474,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </Sidebar>
         )}
-        <div className="relative h-full flex-grow bg-gradient-to-b from-white to-red-50">
+        <div 
+          className="relative h-full flex-grow bg-gradient-to-b from-white to-red-50"
+          style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
+        >
           {/* iOS 18 decorations for content area */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
             {/* Floating red circle */}
@@ -540,7 +548,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               'flex h-full w-full flex-col overflow-auto p-6 text-black transition-all duration-300 ease-in-out'
             )}
           >
-            <div className="relative z-10">
+            <div className="relative z-10 flex-grow flex flex-col">
               <RoleGuard>{children}</RoleGuard>
             </div>
           </div>

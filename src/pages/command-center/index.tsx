@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { fadeInUp, scaleIn, staggerContainer } from '@/utils/animations';
+import useDynamicHeight from '@/hooks/useDynamicHeight';
+import iOS18Decoration from '@/components/iOS18Decoration';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,6 +13,7 @@ const Page = () => {
     { id: 3, title: 'System Status', value: 'Optimal', icon: 'heroicons:server', change: 'Stable' },
     { id: 4, title: 'Alerts', value: '2', icon: 'heroicons:bell-alert', change: '-50%' }
   ]);
+  const dynamicHeight = useDynamicHeight();
 
   useEffect(() => {
     // Simulate loading state
@@ -21,13 +24,27 @@ const Page = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Calculate iframe height based on available space
+  const calculateIframeHeight = () => {
+    if (!dynamicHeight) return '400px';
+    
+    // Subtract approximate header heights and margins
+    const headerHeight = 200;
+    const footerHeight = 100;
+    const availableHeight = dynamicHeight - headerHeight - footerHeight;
+    
+    return Math.max(availableHeight, 400) + 'px';
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="ios18-container min-h-screen w-full"
+      className="ios18-container"
+      style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
     >
-      <div className="container mx-auto h-full px-4 py-6 relative z-10 pointer-events-auto">
+      <iOS18Decoration className="opacity-100" />
+      <div className="container mx-auto h-full px-4 py-6 relative z-10 pointer-events-auto ios18-content">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -84,7 +101,7 @@ const Page = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex justify-center items-center h-[50vh]"
+              className="flex justify-center items-center flex-grow"
             >
               <div className="flex flex-col items-center">
                 <motion.div 
@@ -106,7 +123,8 @@ const Page = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="h-[calc(100vh-300px)] min-h-[400px] ios18-iframe-container bg-white/90 backdrop-blur-md relative"
+              className="ios18-iframe-container bg-white/90 backdrop-blur-md relative flex-grow"
+              style={{ height: calculateIframeHeight() }}
             >
               <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
                 <div className="absolute top-4 right-4 z-20 pointer-events-auto">

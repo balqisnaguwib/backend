@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { fadeInUp, staggerContainer, ios18Card } from '@/utils/animations';
+import useDynamicHeight from '@/hooks/useDynamicHeight';
+import iOS18Decoration from '@/components/iOS18Decoration';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +16,7 @@ const Page = () => {
     { id: 5, status: 'Online', activity: 'Normal' },
     { id: 6, status: 'Online', activity: 'Normal' },
   ]);
+  const dynamicHeight = useDynamicHeight();
 
   const videoUrls = [
     'https://aicoe.sgp1.digitaloceanspaces.com/demo-community/fixed_output.mp4',
@@ -37,9 +40,11 @@ const Page = () => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="ios18-container min-h-screen w-full"
+      className="ios18-container"
+      style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
     >
-      <div className="container mx-auto px-4 py-6 relative z-10 pointer-events-auto">
+      <iOS18Decoration className="opacity-100" />
+      <div className="container mx-auto px-4 py-6 relative z-10 pointer-events-auto ios18-content">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -96,7 +101,7 @@ const Page = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex justify-center items-center h-[30vh]"
+              className="flex justify-center items-center flex-grow"
             >
               <div className="flex flex-col items-center">
                 <motion.div 
@@ -117,7 +122,7 @@ const Page = () => {
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+              className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6"
             >
               {videoUrls.map((videoUrl, index) => (
                 <motion.div

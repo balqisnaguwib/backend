@@ -1,14 +1,21 @@
 // Next, React
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import useDynamicHeight from '@/hooks/useDynamicHeight';
 
-interface iOSDecorationProps {
+interface iOS18DecorationProps {
   className?: string;
 }
 
-const iOS18Decoration: React.FC<iOSDecorationProps> = ({ className = '' }) => {
+const iOS18Decoration: React.FC<iOS18DecorationProps> = ({ className = '' }) => {
+  // Use our custom hook to make sure decoration adapts to dynamic height
+  const dynamicHeight = useDynamicHeight();
+
   return (
-    <div className={`fixed inset-0 overflow-auto pointer-events-none z-0 ${className}`}>
+    <div 
+      className={`fixed inset-0 overflow-hidden pointer-events-none z-0 ${className}`}
+      style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
+    >
       {/* Floating red circle */}
       <motion.div 
         className="absolute w-32 h-32 rounded-full bg-gradient-to-br from-red-400/10 to-red-600/10 blur-xl"
@@ -53,7 +60,7 @@ const iOS18Decoration: React.FC<iOSDecorationProps> = ({ className = '' }) => {
           repeat: Infinity,
           repeatType: "reverse",
         }}
-        style={{ bottom: '10%', left: '5%' }}
+        style={{ bottom: '20%', left: '5%' }}
       />
       
       {/* White glare effect */}
