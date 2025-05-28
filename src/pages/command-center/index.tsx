@@ -43,7 +43,7 @@ const Page = () => {
       className="ios18-container"
       style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
     >
-      <iOS18Decoration className="opacity-100" />
+      {/* <iOS18Decoration className="opacity-100" /> */}
       <div className="container mx-auto h-full px-4 py-6 relative z-10 pointer-events-auto ios18-content">
         <motion.div
           initial="hidden"

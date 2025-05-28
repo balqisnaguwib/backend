@@ -201,7 +201,7 @@ const Page = () => {
             className="fixed right-4 bottom-4 z-50"
           >
             <iframe
-              src={`${domain}/demo-community/widget-embed`}
+              src={`${domain}/widget-embed`}
               data-token={token}
               title="Assistant Demo Widget"
               className="w-96 h-[600px]"
