@@ -67,6 +67,15 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         headers: securityHeaders,
       },
+      {
+        source: '/widget-embed',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' *"
+          }
+        ]
+      }
     ];
   },
   webpack: (config: any) => {

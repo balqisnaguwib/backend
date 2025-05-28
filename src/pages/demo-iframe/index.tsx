@@ -168,13 +168,21 @@ const Page = () => {
                 </div>
                 <pre className="text-green-400 text-sm leading-relaxed">
                   <code>{`<!-- Just add this single line to your website -->
-<iframe 
-  src="${domain}/demo-community/widget-embed"
-  data-token="${token}"
-  style="position: fixed; right: 20px; bottom: 20px; 
-         width: 400px; height: 600px; border: 0; 
-         border-radius: 16px; z-index: 9999;">
-</iframe>`}</code>
+                    <iframe
+                      src="/demo-community/widget-embed"
+                      data-token={token}
+                      title="Assistant Widget"
+                      style={{
+                        width: '400px',
+                        height: '600px',
+                        border: 'none',
+                        background: 'transparent',
+                        backgroundColor: 'transparent',
+                        boxShadow: 'none'
+                      }}
+                      frameBorder="0"
+                      allowTransparency={true}
+                    />`}</code>
                 </pre>
               </div>
             </div>
