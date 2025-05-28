@@ -6,7 +6,7 @@ import EmbedWidget from '@/components/EmbedWidget';
 const Page = () => {
   useEffect(() => {
     // Add some debugging to check if the page loads
-    console.log('Widget embed page loaded');
+    console.log('Widget embed page loaded at /demo-community/widget-embed');
     
     // Ensure the page works in an iframe context
     try {

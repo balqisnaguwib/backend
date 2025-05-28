@@ -36,21 +36,21 @@ const Page = () => {
 
   const embedCodes = {
     basic: `<iframe
-  src="${domain}/widget-embed"
+  src="${domain}/demo-community/widget-embed"
   data-token="${token}"
-  title="Travel Assistant Widget"
+  title="Assistant Widget"
   style="position: fixed; right: 0; bottom: 0; z-index: 9999; height: 600px; width: 400px; border: 0; overflow: hidden; border-radius: 16px;"
   allow="microphone; camera"
   loading="lazy">
 </iframe>`,
     
-    advanced: `<!-- Travel Assistant Widget -->
+    advanced: `<!-- Assistant Widget -->
 <script>
   (function() {
     const widget = document.createElement('iframe');
-    widget.src = '${domain}/widget-embed';
+    widget.src = '${domain}/demo-community/widget-embed';
     widget.setAttribute('data-token', '${token}');
-    widget.title = 'Travel Assistant Widget';
+    widget.title = 'Assistant Widget';
     widget.style.cssText = \`
       position: fixed !important;
       right: 20px !important;
@@ -98,14 +98,14 @@ const Page = () => {
     react: `// React Component Integration
 import { useEffect, useRef } from 'react';
 
-const TravelAssistantWidget = ({ token = '${token}' }) => {
+const AssistantWidget = ({ token = '${token}' }) => {
   const widgetRef = useRef(null);
 
   useEffect(() => {
     const widget = document.createElement('iframe');
-    widget.src = '${domain}/widget-embed';
+    widget.src = '${domain}/demo-community/widget-embed';
     widget.setAttribute('data-token', token);
-    widget.title = 'Travel Assistant Widget';
+    widget.title = 'Assistant Widget';
     widget.style.cssText = \`
       position: fixed;
       right: 20px;
@@ -135,14 +135,14 @@ const TravelAssistantWidget = ({ token = '${token}' }) => {
   return <div ref={widgetRef} />;
 };
 
-export default TravelAssistantWidget;`
+export default AssistantWidget;`
   };
 
   const features = [
     {
       icon: 'heroicons:chat-bubble-left-right',
       title: 'Smart Conversations',
-      description: 'AI-powered chat with travel expertise and local knowledge'
+      description: 'AI-powered chat with expertise'
     },
     {
       icon: 'heroicons:device-phone-mobile',
@@ -189,14 +189,13 @@ export default TravelAssistantWidget;`
             variants={fadeInUp}
             className="ios18-title text-center text-4xl font-bold mb-2"
           >
-            Embed Travel Assistant
+            Embed Assistant
           </motion.h1>
           <motion.p 
             variants={fadeInUp}
             className="text-center text-gray-600 mb-8 max-w-2xl mx-auto"
           >
-            Add our intelligent travel assistant to your website with just a few lines of code. 
-            Perfect for travel agencies, hotels, and tourism websites.
+            Add our intelligent assistant to your website with just a few lines of code.
           </motion.p>
 
           {/* Features Grid */}

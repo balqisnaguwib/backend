@@ -27,8 +27,6 @@ const Page = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
-
   const features = [
     {
       icon: 'heroicons:chat-bubble-left-right',
@@ -102,14 +100,14 @@ const Page = () => {
                 ease: "linear" 
               }}
             >
-              Travel Assistant Demo
+              Assistant Demo
             </motion.h1>
             <motion.p 
               className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
               variants={fadeInUp}
             >
-              Experience the future of travel customer service. See how our AI assistant 
-              transforms visitor engagement and drives bookings.
+              Experience the future of customer service. See how our AI assistant 
+              transforms user engagements.
             </motion.p>
             
             <motion.div 
@@ -127,8 +125,6 @@ const Page = () => {
               </motion.button>
             </motion.div>
           </motion.div>
-
-
 
           {/* Features Grid */}
           <motion.div 
@@ -173,7 +169,7 @@ const Page = () => {
                 <pre className="text-green-400 text-sm leading-relaxed">
                   <code>{`<!-- Just add this single line to your website -->
 <iframe 
-  src="${domain}/widget-embed"
+  src="${domain}/demo-community/widget-embed"
   data-token="${token}"
   style="position: fixed; right: 20px; bottom: 20px; 
          width: 400px; height: 600px; border: 0; 
@@ -183,8 +179,6 @@ const Page = () => {
               </div>
             </div>
           </motion.div>
-
-
         </motion.div>
       </div>
 
@@ -199,9 +193,9 @@ const Page = () => {
             className="fixed right-4 bottom-4 z-50"
           >
             <iframe
-              src={`${domain}/widget-embed`}
+              src={`${domain}/demo-community/widget-embed`}
               data-token={token}
-              title="Travel Assistant Demo Widget"
+              title="Assistant Demo Widget"
               className="w-96 h-[600px] border-0 rounded-2xl shadow-2xl"
               allow="microphone; camera"
               loading="lazy"

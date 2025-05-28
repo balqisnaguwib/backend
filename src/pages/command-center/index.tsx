@@ -157,7 +157,7 @@ const Page = () => {
           transition={{ delay: 0.5 }}
           className="flex justify-center mt-6 space-x-4"
         >
-          <motion.button
+          {/* <motion.button
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             className="ios18-button px-5 py-3 flex items-center"
@@ -172,7 +172,7 @@ const Page = () => {
           >
             <Icon icon="heroicons:share" className="mr-2" />
             Share Dashboard
-          </motion.button>
+          </motion.button> */}
         </motion.div>
       </div>
     </motion.div>

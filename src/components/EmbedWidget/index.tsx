@@ -61,7 +61,7 @@ const EmbedWidget = () => {
                   />
                 </motion.div>
                 <div>
-                  <h3 className="font-semibold">Travel Assistant</h3>
+                  <h3 className="font-semibold">Assistant</h3>
                   <motion.p 
                     className="text-xs text-white/90"
                     animate={{ opacity: [0.7, 1, 0.7] }}
@@ -124,7 +124,7 @@ const EmbedWidget = () => {
             >
               <Image
                 src="/demo-community/yb-fahmi-fadzil.webp"
-                alt="Travel Assistant"
+                alt="Assistant"
                 width={236}
                 height={236}
                 className="relative h-16 w-16 rounded-full object-cover transition-transform duration-300"

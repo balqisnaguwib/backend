@@ -54,10 +54,10 @@ const DemoChat = ({ token }: { token?: string }) => {
         // Demo responses for showcase
         setTimeout(() => {
           const demoResponses = [
-            "Hi there! I'm a demo assistant. I can help you with travel planning, recommendations, and general questions about Kuala Lumpur and Malaysia.",
-            "That's a great question! As a demo, I can show you how I would respond to travel-related queries.",
-            "I'd be happy to help you explore the best places to visit in Malaysia. This is just a demonstration of the chat interface.",
-            "Thanks for trying out the demo! In the real version, I'd provide detailed travel recommendations and local insights."
+            "Hi there! I'm a demo assistant. I can help you with report and general questions about Lembah Pantai.",
+            "That's a great question! As a demo, I can show you how I would respond to queries.",
+            "I'd be happy to help you. This is just a demonstration of the chat interface.",
+            "Thanks for trying out the demo! In the real version, I'd provide detailed insights."
           ];
           const randomResponse = demoResponses[Math.floor(Math.random() * demoResponses.length)];
           setContentsList((prev) => [
@@ -146,7 +146,7 @@ const DemoChat = ({ token }: { token?: string }) => {
           {[
             {
               role: 'assistant',
-              content: token ? 'Salam Madani 👋' : 'Welcome to the demo! 👋 Try asking me about travel recommendations.',
+              content: token ? 'Salam Madani 👋' : 'Welcome to the demo! 👋 ',
             },
             ...contentsList,
           ]?.map((o: any, i: number) => {
@@ -285,7 +285,7 @@ const DemoChat = ({ token }: { token?: string }) => {
             value={inputValue}
             onChange={handleInputChange}
             autoComplete="off"
-            placeholder="Ask me about travel recommendations..."
+            placeholder="Ask me or report"
             className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400 py-1.5 pl-2 pr-6"
             disabled={isLoading}
           />
