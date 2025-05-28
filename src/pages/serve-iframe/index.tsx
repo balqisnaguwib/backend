@@ -60,7 +60,7 @@ const Page = () => {
       width: 400px !important;
       border: 0 !important;
       border-radius: 16px !important;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 !important;
       background: transparent !important;
       overflow: hidden !important;
       transition: all 0.3s ease !important;
@@ -178,7 +178,7 @@ export default AssistantWidget;`
       className="ios18-container"
       style={{ height: dynamicHeight ? `${dynamicHeight}px` : '100vh' }}
     >
-      <iOS18Decoration className="opacity-100" />
+      {/* <iOS18Decoration className="opacity-100" /> */}
       <div className="container mx-auto h-full px-4 py-6 relative z-10 pointer-events-auto ios18-content">
         <motion.div
           initial="hidden"

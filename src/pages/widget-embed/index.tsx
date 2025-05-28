@@ -9,9 +9,9 @@ const Page = () => {
     // Force transparency on all elements
     if (typeof document !== 'undefined') {
       // Remove all backgrounds
-      document.documentElement.style.background = 'none';
+      document.documentElement.style.background = 'transparent';
       document.documentElement.style.backgroundColor = 'transparent';
-      document.body.style.background = 'none';
+      document.body.style.background = 'transparent';
       document.body.style.backgroundColor = 'transparent';
       
       // Ensure no margins or padding
@@ -42,6 +42,11 @@ const Page = () => {
             padding: 0 !important;
             border: none !important;
             overflow: hidden !important;
+          }
+          
+          /* Override any iOS18 decorations */
+          .ios18-decoration {
+            display: none !important;
           }
         `}</style>
       </Head>
